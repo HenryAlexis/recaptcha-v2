@@ -1,5 +1,24 @@
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <form id="Form_ContactForm" method="post">
 	<input type="text" name="Yourname"/>
-	<input type="email" name="Youremail" />
-	<input type="submit" name="action_submit" value="Submit" />
+	<input type="email" name="Youremail" id="EmailField"/>
+	<input type="submit" name="action_submit" value="Submit" id="Form_ContactForm_action_submit"/>
 </form>
+<script type="text/javascript">
+	// Add the Google reCaptcha V2 checkbox into the form after the Email field
+	$( "#EmailField" ).after("<div class='g-recaptcha' data-sitekey='SITEKEY'></div>");
+	
+	// After click submit form, verify that the Google reCaptcha is valid. If not it will stop the form.
+	$("#Form_ContactForm_action_submit").click(function() {
+		var response = grecaptcha.getResponse();
+		if (response.length === 0) {
+			console.log("Google Captcha not validated");
+			return false;
+		} else {
+			console.log("Google Captcha validated");
+			grecaptcha.reset();
+			return true;
+		}
+	});
+</script>
